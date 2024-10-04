@@ -1,0 +1,21 @@
+name: DeployAWSProjeto
+
+on:
+  push:
+    branches: [ "PROD" ]
+  pull_request:
+    branches: [ "PROD" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Deploy na EC2 site
+      run:  
+            echo "${{secrets.KEY_EC2}}" >private_key && chmod 400 private_key
+            ssh -o StrictHostKeyChecking=no -i "private_key" ubuntu@ec2-23-23-37-40.compute-1.amazonaws.com "
+                    cd/home/ubuntu/AtividadeProjetoFlare &&
+                    git pull origin PROD &&
+                    ./executar.sh "
